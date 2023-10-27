@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { leftClamp, rightClamp, scale, x, y, precision } from "$lib/stores";
+  import { scale, x, y, precision } from "$lib/stores";
   import { Canvas } from "@threlte/core";
   import Scene from "$lib/Scene.svelte";
   import Input from "$lib/components/Input.svelte";
@@ -12,11 +12,6 @@
 </h1>
 <section>
   <h2>Controls</h2>
-  <fieldset>
-    <legend>Screen Clip</legend>
-    <Input store={leftClamp} min={-5} max={0} step={0.1}>Left Clip</Input>
-    <Input store={rightClamp} min={0} max={5} step={0.1}>Right Clip</Input>
-  </fieldset>
   <fieldset>
     <legend>transform</legend>
     <Input store={x} min={-2} max={2} step={0.01}>X</Input>
