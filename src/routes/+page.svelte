@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { leftClamp, rightClamp, scale, x, y } from "$lib/stores";
+  import { leftClamp, rightClamp, scale, x, y, precision } from "$lib/stores";
   import { Canvas } from "@threlte/core";
   import Scene from "$lib/Scene.svelte";
 </script>
@@ -45,23 +45,45 @@
     <label>
       X
       <div>
-        <input type="range" min="-2" max="2" step="0.1" bind:value={$x} />
+        <input type="range" min="-2" max="2" step="0.01" bind:value={$x} />
         <output>{$x}</output>
       </div>
     </label>
     <label>
       Y
       <div>
-        <input type="range" min="-2" max="2" step="0.1" bind:value={$y} />
+        <input type="range" min="-2" max="2" step="0.01" bind:value={$y} />
         <output>{$y}</output>
       </div>
       <label>
         Zoom
         <div>
-          <input type="range" min="0" max="10" step="0.1" bind:value={$scale} />
+          <input
+            type="range"
+            min="0"
+            max="100"
+            step="0.01"
+            bind:value={$scale}
+          />
           <output>{$scale}</output>
         </div>
       </label>
+    </label>
+  </fieldset>
+  <fieldset>
+    <legend>render options</legend>
+    <label>
+      Precision
+      <div>
+        <input
+          type="range"
+          min="1"
+          max="20"
+          step="0.1"
+          bind:value={$precision}
+        />
+        <output>{$precision}</output>
+      </div>
     </label>
   </fieldset>
 </section>

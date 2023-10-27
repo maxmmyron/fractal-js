@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { leftClamp, rightClamp, scale, x, y } from "$lib/stores";
+  import { leftClamp, rightClamp, scale, x, y, precision } from "$lib/stores";
   import vertexShader from "$lib/shaders/vertex.glsl?raw";
   import fragmentShader from "$lib/shaders/fragment.glsl?raw";
   import { T } from "@threlte/core";
@@ -21,10 +21,12 @@
       rightClamp: { value: 1.0 },
       scale: { value: 1.0 },
       position: { value: [0, 0] },
+      prec: { value: 1.0 },
     }}
     uniforms.leftClamp.value={$leftClamp}
     uniforms.rightClamp.value={$rightClamp}
     uniforms.scale.value={$scale}
     uniforms.position.value={[$x, $y]}
+    uniforms.prec.value={$precision}
   />
 </T.Mesh>

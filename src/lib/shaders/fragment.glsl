@@ -3,6 +3,7 @@ uniform float leftClamp;
 uniform float rightClamp;
 uniform vec2 position;
 uniform float scale;
+uniform float prec;
 
 varying vec2 vUv;
 
@@ -28,8 +29,8 @@ int iter(float cx, float cy, int maxIter) {
 }
 
 void main() {
-  float xmin = (leftClamp - position.x) / scale;
-  float xmax = (rightClamp - position.x) / scale;
+  float xmin = leftClamp / pow(1.5, scale) - position.x;
+  float xmax = rightClamp / pow(1.5,scale) - position.x;
 
   float yRange = (xmax - xmin) * (16. / 10.);
   float ymin = -(yRange - position.y) / 3.4;
@@ -38,7 +39,7 @@ void main() {
   float x = xmin + (xmax - xmin) * vUv.x;
   float y = ymin + (ymax - ymin) * vUv.y;
 
-  const int iterCount = 40;
+  int iterCount = 64 * int(prec);
 
   float i = float(iter(x, y, iterCount));
   float c = i / float(iterCount);
