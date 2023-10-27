@@ -2,6 +2,7 @@
   import { leftClamp, rightClamp, scale, x, y, precision } from "$lib/stores";
   import { Canvas } from "@threlte/core";
   import Scene from "$lib/Scene.svelte";
+  import Input from "$lib/components/Input.svelte";
 </script>
 
 <h1>
@@ -9,82 +10,22 @@
   when recursively applied to the function f(z)=z<sup>2</sup>+c (with z starting
   at 0 and c being some point on the complex plane.)
 </h1>
-<section style="margin-bottom: 2rem;">
+<section>
   <h2>Controls</h2>
   <fieldset>
     <legend>Screen Clip</legend>
-    <label>
-      Left Clip
-      <div>
-        <input
-          type="range"
-          min="-5"
-          max="0"
-          step="0.1"
-          bind:value={$leftClamp}
-        />
-        <output>{$leftClamp}</output>
-      </div>
-    </label>
-    <label>
-      Right Clip
-      <div>
-        <input
-          type="range"
-          min="0"
-          max="5"
-          step="0.1"
-          bind:value={$rightClamp}
-        />
-        <output>{$rightClamp}</output>
-      </div>
-    </label>
+    <Input store={leftClamp} min={-5} max={0} step={0.1}>Left Clip</Input>
+    <Input store={rightClamp} min={0} max={5} step={0.1}>Right Clip</Input>
   </fieldset>
   <fieldset>
     <legend>transform</legend>
-    <label>
-      X
-      <div>
-        <input type="range" min="-2" max="2" step="0.01" bind:value={$x} />
-        <output>{$x}</output>
-      </div>
-    </label>
-    <label>
-      Y
-      <div>
-        <input type="range" min="-2" max="2" step="0.01" bind:value={$y} />
-        <output>{$y}</output>
-      </div>
-      <label>
-        Zoom
-        <div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            step="0.01"
-            bind:value={$scale}
-          />
-          <output>{$scale}</output>
-        </div>
-      </label>
-    </label>
+    <Input store={x} min={-2} max={2} step={0.01}>X</Input>
+    <Input store={y} min={-2} max={2} step={0.01}>Y</Input>
+    <Input store={scale} min={0} max={100} step={0.01}>Zoom</Input>
   </fieldset>
   <fieldset>
     <legend>render options</legend>
-    <label>
-      Precision
-      <div>
-        <input
-          type="range"
-          min="1"
-          max="20"
-          step="0.1"
-          bind:value={$precision}
-        />
-        <output>{$precision}</output>
-      </div>
-    </label>
+    <Input store={precision} min={1} max={20} step={0.1}>Precision</Input>
   </fieldset>
 </section>
 <main id="primary">
@@ -100,22 +41,19 @@
     max-height: 90vh;
   }
 
+  section {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    gap: 0 16px;
+  }
+
+  section > h2 {
+    width: 100%;
+  }
+
   fieldset {
     display: inline;
     width: fit-content;
-  }
-
-  label {
-    width: fit-content;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  label > div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1rem;
   }
 </style>
