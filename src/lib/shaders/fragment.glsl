@@ -3,7 +3,7 @@ uniform float leftClamp;
 uniform float rightClamp;
 uniform vec2 position;
 uniform float scale;
-uniform float prec;
+uniform int prec;
 
 varying vec2 vUv;
 
@@ -51,12 +51,12 @@ void main() {
   float x = xmin + (xmax - xmin) * vUv.x;
   float y = ymin + (ymax - ymin) * vUv.y;
 
-  int iterCount = 64 * int(prec);
+  int iterCount = 64 + int(pow(2.,float(prec)));
 
   float i = float(iter(x, y, iterCount));
-  float hue = 255. * (i / float(iterCount) / 20.);
+  float hue = (i / float(iterCount));
   float val = (i > float(iterCount)) ? 0. : 1.;
-  vec3 hsv = vec3(hue - 0.7, 1., val);
+  vec3 hsv = vec3(hue - 0.3, 1., val);
   vec3 color = hsv2rgb(hsv);
 
   gl_FragColor = vec4(color, 1.);
