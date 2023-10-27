@@ -1,7 +1,7 @@
-// uniform vec2 resolution;
+precision lowp float;
 uniform vec2 position;
 uniform float scale;
-uniform int prec;
+uniform float prec;
 
 varying vec2 vUv;
 
@@ -22,6 +22,7 @@ int iter(float cx, float cy, int maxIter) {
 
   int i = maxIter;
 
+  // iterate while the point is within a circle of radius 2
   while ((i-- != 0) && (xx + yy < 4.)) {
     // calculate products
     xy = x * y;
@@ -62,7 +63,7 @@ void main() {
   float x = xmin + (xmax - xmin) * vUv.x;
   float y = ymin + (ymax - ymin) * vUv.y;
 
-  int iterCount = 64 + int(pow(2.,float(prec)));
+  int iterCount = 64 + int(pow(2.,prec));
 
   float i = float(iter(x, y, iterCount));
   float hue = (i / float(iterCount));

@@ -20,7 +20,7 @@
   </fieldset>
   <fieldset>
     <legend>render options</legend>
-    <Input store={precision} min={1} max={14} step={1}>Precision</Input>
+    <Input store={precision} min={1} max={14} step={0.1}>Precision</Input>
   </fieldset>
 </section>
 <main id="primary">
