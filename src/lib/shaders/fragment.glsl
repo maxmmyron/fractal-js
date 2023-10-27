@@ -1,14 +1,8 @@
-export const vertex = `
-varying vec2 vUv;
-void main() {
-  vUv = uv;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-}`;
-
-export const fragment = `
 uniform vec2 resolution;
-const float xmin = -2.3;
-const float xmax = 1.;
+uniform float leftClamp;
+uniform float rightClamp;
+uniform vec2 position;
+uniform float scale;
 
 varying vec2 vUv;
 
@@ -34,9 +28,12 @@ int iter(float cx, float cy, int maxIter) {
 }
 
 void main() {
+  float xmin = (leftClamp - position.x) / scale;
+  float xmax = (rightClamp - position.x) / scale;
+
   float yRange = (xmax - xmin) * (16. / 10.);
-  float ymin = -yRange / 3.4;
-  float ymax = yRange / 3.4;
+  float ymin = -(yRange - position.y) / 3.4;
+  float ymax = (yRange + position.y) / 3.4;
 
   float x = xmin + (xmax - xmin) * vUv.x;
   float y = ymin + (ymax - ymin) * vUv.y;
@@ -45,7 +42,7 @@ void main() {
 
   float i = float(iter(x, y, iterCount));
   float c = i / float(iterCount);
-  vec3 color = vec3(1.-c, 1.-c, 1.-c);
+  vec3 color = vec3(1.-c);
 
   gl_FragColor = vec4(color, 1.);
-}`;
+}
