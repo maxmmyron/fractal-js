@@ -1,6 +1,4 @@
-uniform vec2 resolution;
-uniform float leftClamp;
-uniform float rightClamp;
+// uniform vec2 resolution;
 uniform vec2 position;
 uniform float scale;
 uniform int prec;
@@ -41,12 +39,25 @@ int iter(float cx, float cy, int maxIter) {
 }
 
 void main() {
-  float xmin = leftClamp / pow(1.5, scale) - position.x;
-  float xmax = rightClamp / pow(1.5,scale) - position.x;
+  float xmin = -2.4;
+  float xmax = 1.0;
 
-  float yRange = (xmax - xmin) * (16. / 10.);
-  float ymin = -(yRange - position.y) / 3.6;
-  float ymax = (yRange + position.y) / 3.6;
+  // account for coordinate system on x-axis (-2.4 - 1.0)
+  float center = xmin + (xmax - xmin) * 0.5;
+
+  float xRange = (xmax - xmin);
+  float yRange = xRange * (10. / 16.);
+
+  float ymin = -(yRange) / 2.;
+  float ymax = (yRange) / 2.;
+
+  // given scale, calculate new xmin, xmax, ymin, ymax
+  xmin = center - (xRange / 2.) / pow(1.5,scale) + position.x;
+  xmax = center + (xRange / 2.) / pow(1.5,scale) + position.x;
+
+  yRange = (xmax - xmin) * (10. / 16.);
+  ymin = -(yRange) / 2. + position.y;
+  ymax = (yRange) / 2. + position.y;
 
   float x = xmin + (xmax - xmin) * vUv.x;
   float y = ymin + (ymax - ymin) * vUv.y;
