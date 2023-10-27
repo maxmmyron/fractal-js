@@ -17,7 +17,7 @@
     {fragmentShader}
     uniforms={{
       resolution: { value: [window.innerWidth, window.innerHeight] },
-      leftClamp: { value: -2.4 },
+      leftClamp: { value: -3.4 },
       rightClamp: { value: 1.0 },
       scale: { value: 1.0 },
       position: { value: [0, 0] },
