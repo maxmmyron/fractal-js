@@ -44,11 +44,11 @@ float iter(float cx, float cy, int maxIter) {
 }
 
 void main() {
-  float xmin = -2.4;
-  float xmax = 1.0;
+  float xmin = -2.5;
+  float xmax = 1.;
 
   // account for coordinate system on x-axis (-2.4 - 1.0)
-  float center = xmin + (xmax - xmin) * 0.5;
+  float center = 1. - (xmax - xmin) / 2.4;
 
   float xRange = (xmax - xmin);
   float yRange = xRange * (10. / 16.);

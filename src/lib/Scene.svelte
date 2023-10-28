@@ -75,7 +75,7 @@
     uniforms={{
       resolution: { value: [window.innerWidth, window.innerHeight] },
       scale: { value: 1.0 },
-      position: { value: [0, 0] },
+      position: { value: [-1, 0] },
     }}
     uniforms.scale.value={$scale}
     uniforms.position.value={[$x, $y]}
