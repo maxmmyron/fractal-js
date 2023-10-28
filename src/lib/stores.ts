@@ -1,15 +1,16 @@
-import { spring } from "svelte/motion";
+import { cubicOut } from "svelte/easing";
+import { spring, tweened } from "svelte/motion";
 import { writable } from "svelte/store";
 
-export const scale = spring(0., {
-  stiffness: 0.1,
-  damping: 0.4,
+export const scale = tweened(0., {
+  duration: 1000,
+  easing: cubicOut
 });
-export const x = spring(0., {
-  stiffness: 0.1,
-  damping: 0.4,
+export const x = tweened(0., {
+  duration: 1000,
+  easing: cubicOut
 });
-export const y = spring(0., {
-  stiffness: 0.1,
-  damping: 0.4,
+export const y = tweened(0., {
+  duration: 1000,
+  easing: cubicOut
 });
