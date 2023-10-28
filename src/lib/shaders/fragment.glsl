@@ -67,7 +67,7 @@ void main() {
   float x = xmin + (xmax - xmin) * vUv.x;
   float y = ymin + (ymax - ymin) * vUv.y;
 
-  int iterCount = 64 + int(pow(2.,scale/1.75));
+  int iterCount = 64 + int(pow(2., pow(scale, 0.66)));
 
   float smoothcol = iter(x, y, iterCount);
 
