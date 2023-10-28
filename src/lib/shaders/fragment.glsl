@@ -12,7 +12,7 @@ vec3 hsv2rgb(vec3 c) {
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-int iter(float cx, float cy, int maxIter) {
+float iter(float cx, float cy, int maxIter) {
   float x = 0.;
   float y = 0.;
 
@@ -36,7 +36,12 @@ int iter(float cx, float cy, int maxIter) {
     y = xy + xy + cy;
   }
 
-  return maxIter - i;
+  if (i < 1) {
+    return 0.;
+  }
+
+  float logzn = log(xx + yy) / 2.;
+  return float(i) + 1. - log(logzn / log(2.)) / log(2.);
 }
 
 void main() {
@@ -63,12 +68,17 @@ void main() {
   float x = xmin + (xmax - xmin) * vUv.x;
   float y = ymin + (ymax - ymin) * vUv.y;
 
-  int iterCount = 64 + int(pow(2.,prec));
+  int iterCount = 64 + int(pow(2.,scale/1.75));
 
-  float i = float(iter(x, y, iterCount));
-  float hue = (i / float(iterCount));
-  float val = (i > float(iterCount)) ? 0. : 1.;
-  vec3 hsv = vec3(hue - 0.3, 1., val);
+  float smoothcol = iter(x, y, iterCount);
+
+  if(smoothcol == 0.) {
+    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+    return;
+  }
+
+  float hue = (0.9 + 10. * smoothcol);
+  vec3 hsv = vec3(smoothcol / 500., 0.6, 1.0);
   vec3 color = hsv2rgb(hsv);
 
   gl_FragColor = vec4(color, 1.);
