@@ -57,12 +57,12 @@ void main() {
   float ymax = (yRange) / 2.;
 
   // given scale, calculate new xmin, xmax, ymin, ymax
-  xmin = center - (xRange / 2.) / pow(1.5,scale) + position.x;
-  xmax = center + (xRange / 2.) / pow(1.5,scale) + position.x;
+  xmin = position.x + (center * xRange) / pow(1.5,scale);
+  xmax = position.x - (center * xRange) / pow(1.5,scale);
 
   yRange = (xmax - xmin) * (10. / 16.);
-  ymin = -(yRange) / 2. + position.y;
-  ymax = (yRange) / 2. + position.y;
+  ymin = position.y - (yRange) / 2.;
+  ymax = position.y + (yRange) / 2.;
 
   float x = xmin + (xmax - xmin) * vUv.x;
   float y = ymin + (ymax - ymin) * vUv.y;
