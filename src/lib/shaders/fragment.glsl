@@ -1,7 +1,6 @@
 precision lowp float;
 uniform vec2 position;
 uniform float scale;
-uniform float prec;
 
 varying vec2 vUv;
 
@@ -73,12 +72,11 @@ void main() {
   float smoothcol = iter(x, y, iterCount);
 
   if(smoothcol == 0.) {
-    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+    gl_FragColor = vec4(0.1, 0.1, 0.15, 1.0);
     return;
   }
 
-  float hue = (0.9 + 10. * smoothcol);
-  vec3 hsv = vec3(smoothcol / 500., 0.6, 1.0);
+  vec3 hsv = vec3(smoothcol / 500. - 0.5, 0.8, 0.75);
   vec3 color = hsv2rgb(hsv);
 
   gl_FragColor = vec4(color, 1.);
