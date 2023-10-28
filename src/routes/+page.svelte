@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { scale, x, y, precision } from "$lib/stores";
+  import { scale, x, y } from "$lib/stores";
   import { Canvas } from "@threlte/core";
   import Scene from "$lib/Scene.svelte";
   import Input from "$lib/components/Input.svelte";
@@ -17,10 +17,6 @@
     <Input store={x} min={-2} max={2} step={0.01}>X</Input>
     <Input store={y} min={-2} max={2} step={0.01}>Y</Input>
     <Input store={scale} min={0} max={100} step={0.01}>Zoom</Input>
-  </fieldset>
-  <fieldset>
-    <legend>render options</legend>
-    <Input store={precision} min={1} max={14} step={0.1}>Precision</Input>
   </fieldset>
 </section>
 <main id="primary">
