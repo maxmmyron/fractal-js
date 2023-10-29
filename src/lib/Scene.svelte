@@ -9,16 +9,18 @@
 
   // i don't really understand why 7.68 fits the plane to the screen ¯\_(ツ)_/¯
   const planeScaling = 7.68;
+  // define plane width and height (i.e. coordinate system of zoom point)
+  const planeW = 1.6 * planeScaling;
+  const planeH = planeScaling;
 
+  // initial plotting values
   let xmin = -2;
   let xmax = 1;
 
-  let yRange = (xmax - xmin) * (1 / 1.6);
+  let ymin = (-(xmax - xmin) * (planeH / planeW)) / 2;
+  let ymax = ((xmax - xmin) * (planeH / planeW)) / 2;
 
-  let ymin = -yRange / 2;
-  let ymax = yRange / 2;
-
-  const normalize = (
+  const norm = (
     value: number,
     localmin: number,
     localmax: number,
@@ -30,48 +32,36 @@
   };
 
   interactivity();
+
   const zoom = (
     e: unknown & { point: { x: number; y: number; z: number } }
   ) => {
-    // given scale, x, and y, calculate the new scale, x, and y.
-    // x and y is the current center of the screen.
-    // scale is the current zoom level, expressed at pow(1.5, scale).
-
     // get the current mouse position
     const { point } = e;
 
-    console.log(`mouse position: (${point.x}, ${point.y})`);
-    console.log(`prev zoom -- x: (${xmin}, ${xmax}), y: (${ymin}, ${ymax})`);
+    // noramlize mouse position to the plotting plane
+    const normedCenterX = norm(point.x, -planeW / 2, planeW / 2, xmin, xmax);
+    const normedCenterY = norm(point.y, -planeH / 2, planeH / 2, ymin, ymax);
 
-    const width = 1.6 * planeScaling;
-    const height = planeScaling;
+    // (normedX, normedY) represents our new center point.
+    // our xmin, xmax, ymin, ymax are the bounds of the plotting plane.
+    // these are calculated by scaling in the current plot width and height by 2.
 
-    const wmin = -width / 2;
-    const wmax = width / 2;
+    // calculate the new width and height of the plotting plane
+    const width = (xmax - xmin) / 2;
+    const height = (ymax - ymin) / 2;
 
-    const hmin = -height / 2;
-    const hmax = height / 2;
+    // calculate the new bounds of the plotting plane
+    xmin = normedCenterX - width / 2;
+    xmax = normedCenterX + width / 2;
 
-    let normedXMin = normalize(point.x + wmin, wmin, wmax, xmin, xmax);
-    let normedYMin = normalize(point.y + hmin, hmin, hmax, ymin, ymax);
+    ymin = normedCenterY - height / 2;
+    ymax = normedCenterY + height / 2;
 
-    let normedXMax = normalize(point.x + wmax, wmin, wmax, xmin, xmax);
-    let normedYMax = normalize(point.y + hmax, hmin, hmax, ymin, ymax);
-
-    // set the new values
+    // update uniforms and scale
+    mn.set([xmin, ymin]);
+    mx.set([xmax, ymax]);
     scale.set($scale + 1);
-
-    console.log(
-      `new zoom -- x: (${normedXMin}, ${normedXMax}), y: (${normedYMin}, ${normedYMax})`
-    );
-
-    xmin = normedXMin;
-    ymin = normedYMin;
-    xmax = normedXMax;
-    ymax = normedYMax;
-
-    mn.set([normedXMin, normedYMin], { duration: 0 });
-    mx.set([normedXMax, normedYMax], { duration: 0 });
   };
 </script>
 
