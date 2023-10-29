@@ -1,13 +1,18 @@
 <script lang="ts">
-  import { scale, x, y, cx, cy, view } from "$lib/stores";
+  import { scale, mn, mx, cx, cy, view } from "$lib/stores";
   import { Canvas } from "@threlte/core";
   import Scene from "$lib/Scene.svelte";
   import Input from "$lib/components/Input.svelte";
 
+  let main: HTMLElement;
+
+  let resolution: number[];
+  $: main && (resolution = [main.clientWidth, main.clientHeight]);
+
   const reset = () => {
     scale.set(0);
-    x.set(-1);
-    y.set(0);
+    mn.set([-2, -1]);
+    mx.set([1, 1]);
     cx.set(0);
     cy.set(0);
   };
@@ -25,8 +30,6 @@
   </header>
   <fieldset>
     <legend>transform</legend>
-    <Input store={x} min={-2} max={2} step={0.01}>X</Input>
-    <Input store={y} min={-2} max={2} step={0.01}>Y</Input>
     <Input store={scale} min={0} max={100} step={0.01}>Zoom</Input>
   </fieldset>
   <fieldset>
@@ -40,9 +43,9 @@
     </select>
   </fieldset>
 </section>
-<main id="primary">
+<main id="primary" bind:this={main}>
   <Canvas>
-    <Scene />
+    <Scene {resolution} />
   </Canvas>
 </main>
 

@@ -1,7 +1,11 @@
 precision lowp float;
-uniform vec2 position;
-uniform vec2 juliaC;
+
+uniform vec2 resolution;
+uniform vec2 mn;
+uniform vec2 mx;
 uniform float scale;
+
+uniform vec2 juliaC;
 uniform float view;
 
 varying vec2 vUv;
@@ -78,28 +82,8 @@ float brot(float cx, float cy, int maxIter) {
 }
 
 void main() {
-  float xmin = -1.;
-  float xmax = 1.;
-
-  // account for coordinate system on x-axis (-2.4 - 1.0)
-  float center = 1. - (xmax - xmin) / 2.4;
-
-  float xRange = (xmax - xmin);
-  float yRange = xRange * (10. / 16.);
-
-  float ymin = -(yRange) / 2.;
-  float ymax = (yRange) / 2.;
-
-  // given scale, calculate new xmin, xmax, ymin, ymax
-  xmin = position.x - (xRange) / pow(1.5,scale);
-  xmax = position.x + (xRange * 2.) / pow(1.5,scale);
-
-  yRange = (xmax - xmin) * (10. / 16.);
-  ymin = position.y - (yRange) / 2.;
-  ymax = position.y + (yRange) / 2.;
-
-  float x = xmin + (xmax - xmin) * vUv.x;
-  float y = ymin + (ymax - ymin) * vUv.y;
+  float x = mn.x + (mx.x - mn.x) * vUv.x;
+  float y = mn.y + (mx.y - mn.y) * vUv.y;
 
   int iterCount = 64 + int(pow(2., pow(scale, 0.66)));
 

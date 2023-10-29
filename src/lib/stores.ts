@@ -6,11 +6,13 @@ export const scale = tweened(0., {
   duration: 1000,
   easing: cubicOut
 });
-export const x = tweened(-1., {
+
+export const mn = tweened([-2, -1], {
   duration: 1000,
   easing: cubicOut
 });
-export const y = tweened(0., {
+
+export const mx = tweened([1, 1], {
   duration: 1000,
   easing: cubicOut
 });

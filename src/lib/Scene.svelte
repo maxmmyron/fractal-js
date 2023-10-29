@@ -1,15 +1,17 @@
 <script lang="ts">
-  import { scale, x, y, cx, cy, view } from "$lib/stores";
+  import { scale, mn, mx, cx, cy, view } from "$lib/stores";
   import vertexShader from "$lib/shaders/vertex.glsl?raw";
   import fragmentShader from "$lib/shaders/fragment.glsl?raw";
   import { T } from "@threlte/core";
   import { interactivity } from "@threlte/extras";
 
-  // i don't really understand why 7.68 fits the plane to the screen ¯\_(ツ)_/¯
-  let planeScaling = 7.68;
+  export let resolution: number[];
 
-  let xmin = -2.4;
-  let xmax = 1.0;
+  // i don't really understand why 7.68 fits the plane to the screen ¯\_(ツ)_/¯
+  const planeScaling = 7.68;
+
+  let xmin = -2;
+  let xmax = 1;
 
   let yRange = (xmax - xmin) * (1 / 1.6);
 
@@ -28,7 +30,9 @@
   };
 
   interactivity();
-  const zoom = (e) => {
+  const zoom = (
+    e: unknown & { point: { x: number; y: number; z: number } }
+  ) => {
     // given scale, x, and y, calculate the new scale, x, and y.
     // x and y is the current center of the screen.
     // scale is the current zoom level, expressed at pow(1.5, scale).
@@ -36,34 +40,38 @@
     // get the current mouse position
     const { point } = e;
 
-    let normedX = normalize(
-      point.x,
-      (-1.6 * planeScaling) / 2,
-      (1.6 * planeScaling) / 2,
-      xmin,
-      xmax
-    );
-    let normedY = normalize(
-      point.y,
-      -planeScaling / 2,
-      planeScaling / 2,
-      ymin,
-      ymax
-    );
+    console.log(`mouse position: (${point.x}, ${point.y})`);
+    console.log(`prev zoom -- x: (${xmin}, ${xmax}), y: (${ymin}, ${ymax})`);
 
-    const width = 3.4 / Math.pow(1.5, $scale);
-    const height = width / 2;
+    const width = 1.6 * planeScaling;
+    const height = planeScaling;
 
-    xmin = normedX - width / 2;
-    xmax = normedX + width / 2;
+    const wmin = -width / 2;
+    const wmax = width / 2;
 
-    ymin = normedY - height / 2;
-    ymax = normedY + height / 2;
+    const hmin = -height / 2;
+    const hmax = height / 2;
+
+    let normedXMin = normalize(point.x + wmin, wmin, wmax, xmin, xmax);
+    let normedYMin = normalize(point.y + hmin, hmin, hmax, ymin, ymax);
+
+    let normedXMax = normalize(point.x + wmax, wmin, wmax, xmin, xmax);
+    let normedYMax = normalize(point.y + hmax, hmin, hmax, ymin, ymax);
 
     // set the new values
     scale.set($scale + 1);
-    x.set(normedX);
-    y.set(normedY);
+
+    console.log(
+      `new zoom -- x: (${normedXMin}, ${normedXMax}), y: (${normedYMin}, ${normedYMax})`
+    );
+
+    xmin = normedXMin;
+    ymin = normedYMin;
+    xmax = normedXMax;
+    ymax = normedYMax;
+
+    mn.set([normedXMin, normedYMin], { duration: 0 });
+    mx.set([normedXMax, normedYMax], { duration: 0 });
   };
 </script>
 
@@ -73,14 +81,16 @@
     {vertexShader}
     {fragmentShader}
     uniforms={{
-      resolution: { value: [window.innerWidth, window.innerHeight] },
-      scale: { value: 1.0 },
-      position: { value: [-1, 0] },
+      resolution: { value: resolution },
+      scale: { value: 0.0 },
+      mn: { value: [-2, -1] },
+      mx: { value: [1, 1] },
       juliaC: { value: [0.0, 0.0] },
       view: { value: 0 },
     }}
     uniforms.scale.value={$scale}
-    uniforms.position.value={[$x, $y]}
+    uniforms.mn.value={$mn}
+    uniforms.mx.value={$mx}
     uniforms.juliaC.value={[$cx, $cy]}
     uniforms.view.value={$view}
   />
