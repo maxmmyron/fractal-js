@@ -4,13 +4,14 @@
   import fragmentShader from "$lib/shaders/fragment.glsl?raw";
   import { T } from "@threlte/core";
   import { interactivity } from "@threlte/extras";
+  import { onMount } from "svelte";
 
   export let resolution: number[];
 
   // i don't really understand why 7.68 fits the plane to the screen ¯\_(ツ)_/¯
   const planeScaling = 7.68;
   // define plane width and height (i.e. coordinate system of zoom point)
-  const planeW = 1.6 * planeScaling;
+  const planeW = (resolution[0] / resolution[1]) * planeScaling;
   const planeH = planeScaling;
 
   // initial plotting values
@@ -19,6 +20,12 @@
 
   let ymin = (-(xmax - xmin) * (planeH / planeW)) / 2;
   let ymax = ((xmax - xmin) * (planeH / planeW)) / 2;
+
+  onMount(() => {
+    // set initial plotting values
+    mn.set([xmin, ymin], { duration: 0 });
+    mx.set([xmax, ymax], { duration: 0 });
+  });
 
   const norm = (
     value: number,
@@ -66,15 +73,17 @@
 </script>
 
 <T.Mesh on:click={zoom}>
-  <T.PlaneGeometry args={[1.6 * planeScaling, planeScaling]} />
+  <T.PlaneGeometry
+    args={[(resolution[0] / resolution[1]) * planeScaling, planeScaling]}
+  />
   <T.ShaderMaterial
     {vertexShader}
     {fragmentShader}
     uniforms={{
       resolution: { value: resolution },
       scale: { value: 0.0 },
-      mn: { value: [-2, -1] },
-      mx: { value: [1, 1] },
+      mn: { value: [-2, (-3 * (resolution[1] / resolution[0])) / 2] },
+      mx: { value: [1, (3 * (resolution[1] / resolution[0])) / 2] },
       juliaC: { value: [0.0, 0.0] },
       view: { value: 0 },
     }}
