@@ -1,6 +1,8 @@
 precision lowp float;
 uniform vec2 position;
+uniform vec2 juliaC;
 uniform float scale;
+uniform float view;
 
 varying vec2 vUv;
 
@@ -11,7 +13,39 @@ vec3 hsv2rgb(vec3 c) {
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-float iter(float cx, float cy, int maxIter) {
+float julia(vec2 c, vec2 p, int maxIter) {
+  float x = p.x;
+  float y = p.y;
+
+  float xx = x * x;
+  float yy = y * y;
+  float xy = x * y;
+
+  int i = maxIter;
+
+  // iterate while the point is within a circle of radius 2
+  while ((i-- != 0) && (xx + yy < 4.)) {
+    // calculate products
+    xy = x * y;
+    xx = x * x;
+    yy = y * y;
+
+    // x = x^2 - y^2 + cx
+    x = xx - yy + c.x;
+
+    // y = 2xy + cy
+    y = xy + xy + c.y;
+  }
+
+  if (i < 1) {
+    return 0.;
+  }
+
+  float logzn = log(xx + yy) / 2.;
+  return float(i) + 1. - log(logzn / log(2.)) / log(2.);
+}
+
+float brot(float cx, float cy, int maxIter) {
   float x = 0.;
   float y = 0.;
 
@@ -44,7 +78,7 @@ float iter(float cx, float cy, int maxIter) {
 }
 
 void main() {
-  float xmin = -2.5;
+  float xmin = -1.;
   float xmax = 1.;
 
   // account for coordinate system on x-axis (-2.4 - 1.0)
@@ -57,8 +91,8 @@ void main() {
   float ymax = (yRange) / 2.;
 
   // given scale, calculate new xmin, xmax, ymin, ymax
-  xmin = position.x + (center * xRange) / pow(1.5,scale);
-  xmax = position.x - (center * xRange) / pow(1.5,scale);
+  xmin = position.x - (xRange) / pow(1.5,scale);
+  xmax = position.x + (xRange * 2.) / pow(1.5,scale);
 
   yRange = (xmax - xmin) * (10. / 16.);
   ymin = position.y - (yRange) / 2.;
@@ -69,7 +103,9 @@ void main() {
 
   int iterCount = 64 + int(pow(2., pow(scale, 0.66)));
 
-  float smoothcol = iter(x, y, iterCount);
+  float smoothcol;
+  if(view == 0.) smoothcol = brot(x, y, iterCount);
+  else smoothcol = julia(juliaC, vec2(x, y), iterCount);
 
   if(smoothcol == 0.) {
     gl_FragColor = vec4(0.1, 0.1, 0.15, 1.0);

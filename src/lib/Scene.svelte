@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { scale, x, y } from "$lib/stores";
+  import { scale, x, y, cx, cy, view } from "$lib/stores";
   import vertexShader from "$lib/shaders/vertex.glsl?raw";
   import fragmentShader from "$lib/shaders/fragment.glsl?raw";
   import { T } from "@threlte/core";
@@ -76,8 +76,12 @@
       resolution: { value: [window.innerWidth, window.innerHeight] },
       scale: { value: 1.0 },
       position: { value: [-1, 0] },
+      juliaC: { value: [0.0, 0.0] },
+      view: { value: 0 },
     }}
     uniforms.scale.value={$scale}
     uniforms.position.value={[$x, $y]}
+    uniforms.juliaC.value={[$cx, $cy]}
+    uniforms.view.value={$view}
   />
 </T.Mesh>
