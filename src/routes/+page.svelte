@@ -9,17 +9,44 @@
 
   let resolution: number[] = [0, 0];
 
+  let loaded = false;
+
   onMount(() => {
     resolution = [container.clientWidth, container.clientHeight];
+    loaded = true;
   });
+
+  const resetMandelbrot = () => {
+    mn.set([-2, (-3 * (resolution[1] / resolution[0])) / 2]);
+    mx.set([1, (3 * (resolution[1] / resolution[0])) / 2]);
+  };
+
+  const resetJulia = () => {
+    mn.set([-2, (-4 * (resolution[1] / resolution[0])) / 2]);
+    mx.set([2, (4 * (resolution[1] / resolution[0])) / 2]);
+    cx.set(0.285);
+    cy.set(0.01);
+  };
 
   const reset = () => {
     scale.set(0);
-    mn.set([-2, (-3 * (resolution[1] / resolution[0])) / 2]);
-    mx.set([1, (3 * (resolution[1] / resolution[0])) / 2]);
-    cx.set(0);
-    cy.set(0);
+    if (parseInt($view) == 0) {
+      resetMandelbrot();
+    } else if (parseInt($view) == 1) {
+      resetJulia();
+    }
   };
+
+  $: {
+    if (loaded) {
+      scale.set(0);
+      if (parseInt($view) == 0) {
+        resetMandelbrot();
+      } else if (parseInt($view) == 1) {
+        resetJulia();
+      }
+    }
+  }
 </script>
 
 <main class="flex h-screen">

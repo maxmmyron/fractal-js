@@ -27,4 +27,4 @@ export const cy = tweened(0., {
   easing: cubicOut
 });
 
-export const view = writable(0);
+export const view = writable("0");

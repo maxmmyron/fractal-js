@@ -91,6 +91,6 @@
     uniforms.mn.value={$mn}
     uniforms.mx.value={$mx}
     uniforms.juliaC.value={[$cx, $cy]}
-    uniforms.view.value={$view}
+    uniforms.view.value={parseInt($view)}
   />
 </T.Mesh>
