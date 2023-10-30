@@ -51,7 +51,10 @@
   <section class="w-[480px] flex flex-col gap-8 p-4 border-r h-full">
     <header class="flex items-center justify-between gap-4">
       <h2 class="text-3xl font-bold">Fractal City-ville</h2>
-      <button on:click={reset}>Reset</button>
+      <button
+        class="px-3 py-1 border rounded-md shadow bg-slate-950 text-white"
+        on:click={reset}>Reset</button
+      >
     </header>
     <fieldset class="border py-2 px-3">
       <legend><h3 class="text-xl font-semibold">Coloring Options</h3></legend>
