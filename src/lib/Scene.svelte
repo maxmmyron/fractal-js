@@ -8,20 +8,23 @@
   import { onMount } from "svelte";
 
   export let resolution: number[];
-  export let viewType: "mandelbrot" | "julia" = "mandelbrot";
+  export let viewType: App.Locals["View"] = "mandelbrot";
 
-  export const reset = (type: "mandelbrot" | "julia") => {
+  export const reset = (type: App.Locals["View"]) => {
     scale.set(0);
-    if (type == "mandelbrot") {
-      xmin = -2;
-      xmax = 1;
-      ymin = (-(xmax - xmin) * (resolution[1] / resolution[0])) / 2;
-      ymax = ((xmax - xmin) * (resolution[1] / resolution[0])) / 2;
-    } else if (type == "julia") {
-      xmin = -2;
-      xmax = 2;
-      ymin = (-(xmax - xmin) * (resolution[1] / resolution[0])) / 2;
-      ymax = ((xmax - xmin) * (resolution[1] / resolution[0])) / 2;
+    switch (type) {
+      case "mandelbrot":
+        mn.set([-2, (-3 * (resolution[1] / resolution[0])) / 2]);
+        mx.set([1, (3 * (resolution[1] / resolution[0])) / 2]);
+        break;
+      case "julia":
+        mn.set([-2, (-4 * (resolution[1] / resolution[0])) / 2]);
+        mx.set([2, (4 * (resolution[1] / resolution[0])) / 2]);
+        cx.set(0.285);
+        cy.set(0.01);
+        break;
+      default:
+        throw new Error(`Unhandled view type "${type}"`);
     }
   };
 
