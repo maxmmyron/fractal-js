@@ -99,8 +99,6 @@
       </fieldset>
     </section>
     <section class="space-y-5">
-      <h2 class="text-3xl font-bold">Credits</h2>
-
       <p class="mt-auto">
         made by
         <a
