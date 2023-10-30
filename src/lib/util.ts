@@ -4,6 +4,10 @@ export const getViewValue = (view: App.Locals["View"]) => {
       return 0;
     case "julia":
       return 1;
+    case "burningship":
+      return 2;
+    default:
+      throw new Error("Invalid view");
   }
 };
 

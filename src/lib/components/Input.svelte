@@ -1,7 +1,5 @@
 <script lang="ts">
-  import type { Writable } from "svelte/store";
-
-  export let store: Writable<number>;
+  export let value: number;
 </script>
 
 <label class="w-full grid grid-cols-6">
@@ -10,7 +8,7 @@
     class="col-start-2 col-span-4"
     type="range"
     {...$$restProps}
-    bind:value={$store}
+    bind:value
   />
-  <output class="col-start-6 text-right">{$store}</output>
+  <output class="col-start-6 text-right">{value}</output>
 </label>

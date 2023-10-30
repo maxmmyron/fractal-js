@@ -1,5 +1,6 @@
 import { cubicOut } from "svelte/easing";
 import { tweened } from "svelte/motion";
+import { writable } from "svelte/store";
 
 export const scale = tweened(0., {
   duration: 1000,
@@ -25,3 +26,5 @@ export const cy = tweened(0., {
   duration: 1000,
   easing: cubicOut
 });
+
+export const exp = writable(2);

@@ -4,7 +4,7 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			View: "mandelbrot" | "julia";
+			View: "mandelbrot" | "julia" | "burningship";
 		}
 		// interface PageData {}
 		// interface Platform {}

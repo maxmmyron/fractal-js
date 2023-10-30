@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { scale, mn, mx, cx, cy } from "$lib/stores";
+  import { scale, mn, mx, cx, cy, exp } from "$lib/stores";
   import { norm, getViewValue } from "$lib/util";
   import vertexShader from "$lib/shaders/vertex.glsl?raw";
   import fragmentShader from "$lib/shaders/fragment.glsl?raw";
@@ -11,17 +11,20 @@
   export let viewType: App.Locals["View"] = "mandelbrot";
 
   export const reset = (type: App.Locals["View"]) => {
-    scale.set(0);
     switch (type) {
       case "mandelbrot":
-        mn.set([-2, (-3 * (resolution[1] / resolution[0])) / 2]);
-        mx.set([1, (3 * (resolution[1] / resolution[0])) / 2]);
+        (xmin = -2), (ymin = (-3 * (resolution[1] / resolution[0])) / 2);
+        (xmax = 1), (ymax = (3 * (resolution[1] / resolution[0])) / 2);
         break;
       case "julia":
-        mn.set([-2, (-4 * (resolution[1] / resolution[0])) / 2]);
-        mx.set([2, (4 * (resolution[1] / resolution[0])) / 2]);
-        cx.set(0.285);
-        cy.set(0.01);
+        (xmin = -2), (ymin = (-4 * (resolution[1] / resolution[0])) / 2);
+        (xmax = 2), (ymax = (4 * (resolution[1] / resolution[0])) / 2);
+        break;
+      case "burningship":
+        (xmin = -2),
+          (ymin = (-3.5 * (resolution[1] / resolution[0])) / 2 + 0.5);
+        (xmax = 1.5),
+          (ymax = (3.5 * (resolution[1] / resolution[0])) / 2 + 0.5);
         break;
       default:
         throw new Error(`Unhandled view type "${type}"`);
@@ -95,11 +98,13 @@
       mx: { value: [1, (3 * (resolution[1] / resolution[0])) / 2] },
       juliaC: { value: [0.0, 0.0] },
       view: { value: 0 },
+      exp: { value: 2 },
     }}
     uniforms.scale.value={$scale}
     uniforms.mn.value={$mn}
     uniforms.mx.value={$mx}
     uniforms.juliaC.value={[$cx, $cy]}
     uniforms.view.value={getViewValue(viewType)}
+    uniforms.exp.value={$exp}
   />
 </T.Mesh>
