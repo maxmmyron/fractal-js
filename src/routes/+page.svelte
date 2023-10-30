@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { scale, mn, mx, cx, cy, view } from "$lib/stores";
+  import { scale, mn, mx, cx, cy } from "$lib/stores";
   import { Canvas } from "@threlte/core";
   import Scene from "$lib/Scene.svelte";
   import Input from "$lib/components/Input.svelte";
@@ -8,45 +8,31 @@
   let container: HTMLElement;
 
   let resolution: number[] = [0, 0];
+  let viewType: App.Locals["View"] = "mandelbrot";
 
-  let loaded = false;
+  let resetScene: (type: App.Locals["View"]) => void;
 
-  onMount(() => {
-    resolution = [container.clientWidth, container.clientHeight];
-    loaded = true;
-  });
-
-  const resetMandelbrot = () => {
-    mn.set([-2, (-3 * (resolution[1] / resolution[0])) / 2]);
-    mx.set([1, (3 * (resolution[1] / resolution[0])) / 2]);
-  };
-
-  const resetJulia = () => {
-    mn.set([-2, (-4 * (resolution[1] / resolution[0])) / 2]);
-    mx.set([2, (4 * (resolution[1] / resolution[0])) / 2]);
-    cx.set(0.285);
-    cy.set(0.01);
-  };
+  onMount(() => (resolution = [container.clientWidth, container.clientHeight]));
 
   const reset = () => {
     scale.set(0);
-    if (parseInt($view) == 0) {
-      resetMandelbrot();
-    } else if (parseInt($view) == 1) {
-      resetJulia();
+    switch (viewType) {
+      case "mandelbrot":
+        mn.set([-2, (-3 * (resolution[1] / resolution[0])) / 2]);
+        mx.set([1, (3 * (resolution[1] / resolution[0])) / 2]);
+        resetScene(viewType);
+        break;
+      case "julia":
+        mn.set([-2, (-4 * (resolution[1] / resolution[0])) / 2]);
+        mx.set([2, (4 * (resolution[1] / resolution[0])) / 2]);
+        cx.set(0.285);
+        cy.set(0.01);
+        resetScene(viewType);
+        break;
+      default:
+        throw new Error(`Unhandled view type "${viewType}"`);
     }
   };
-
-  $: {
-    if (loaded) {
-      scale.set(0);
-      if (parseInt($view) == 0) {
-        resetMandelbrot();
-      } else if (parseInt($view) == 1) {
-        resetJulia();
-      }
-    }
-  }
 </script>
 
 <main class="flex h-screen">
@@ -61,18 +47,18 @@
     </fieldset>
     <fieldset class="border py-2 px-3">
       <legend>render</legend>
-      <Input store={cx} min={-2} max={2} step={0.01}>X</Input>
-      <Input store={cy} min={-2} max={2} step={0.01}>Y</Input>
+      <Input store={cx} min={-2} max={2} step={0.01}>C<sub>x</sub></Input>
+      <Input store={cy} min={-2} max={2} step={0.01}>C<sub>y</sub></Input>
       <br />
-      <select bind:value={$view} class="py-1 px-2">
-        <option value="0" selected>Mandelbrot</option>
-        <option value="1">Julia Shit</option>
+      <select bind:value={viewType} class="py-1 px-2" on:change={reset}>
+        <option value="mandelbrot" selected>Mandelbrot</option>
+        <option value="julia">Julia Shit</option>
       </select>
     </fieldset>
   </section>
   <section class="flex-1" bind:this={container}>
     <Canvas>
-      <Scene {resolution} />
+      <Scene {resolution} {viewType} bind:reset={resetScene} />
     </Canvas>
   </section>
 </main>

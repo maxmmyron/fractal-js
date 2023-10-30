@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { scale, mn, mx, cx, cy, view } from "$lib/stores";
+  import { scale, mn, mx, cx, cy } from "$lib/stores";
+  import { norm, getViewValue } from "$lib/util";
   import vertexShader from "$lib/shaders/vertex.glsl?raw";
   import fragmentShader from "$lib/shaders/fragment.glsl?raw";
   import { T } from "@threlte/core";
@@ -7,6 +8,22 @@
   import { onMount } from "svelte";
 
   export let resolution: number[];
+  export let viewType: "mandelbrot" | "julia" = "mandelbrot";
+
+  export const reset = (type: "mandelbrot" | "julia") => {
+    scale.set(0);
+    if (type == "mandelbrot") {
+      xmin = -2;
+      xmax = 1;
+      ymin = (-(xmax - xmin) * (resolution[1] / resolution[0])) / 2;
+      ymax = ((xmax - xmin) * (resolution[1] / resolution[0])) / 2;
+    } else if (type == "julia") {
+      xmin = -2;
+      xmax = 2;
+      ymin = (-(xmax - xmin) * (resolution[1] / resolution[0])) / 2;
+      ymax = ((xmax - xmin) * (resolution[1] / resolution[0])) / 2;
+    }
+  };
 
   // i don't really understand why 7.68 fits the plane to the screen ¯\_(ツ)_/¯
   const planeScaling = 7.68;
@@ -26,17 +43,6 @@
     mn.set([xmin, ymin], { duration: 0 });
     mx.set([xmax, ymax], { duration: 0 });
   });
-
-  const norm = (
-    value: number,
-    localmin: number,
-    localmax: number,
-    min: number,
-    max: number
-  ) => {
-    let norm = (value - localmin) / (localmax - localmin);
-    return norm * (max - min) + min;
-  };
 
   interactivity();
 
@@ -91,6 +97,6 @@
     uniforms.mn.value={$mn}
     uniforms.mx.value={$mx}
     uniforms.juliaC.value={[$cx, $cy]}
-    uniforms.view.value={parseInt($view)}
+    uniforms.view.value={getViewValue(viewType)}
   />
 </T.Mesh>
