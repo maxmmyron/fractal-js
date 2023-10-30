@@ -50,7 +50,7 @@
 <main class="flex h-screen">
   <section class="w-[480px] flex flex-col gap-8 p-4 border-r h-full">
     <header class="flex items-center justify-between gap-4">
-      <h2 class="text-3xl font-bold">Controls</h2>
+      <h2 class="text-3xl font-bold">Fractal City-ville</h2>
       <button on:click={reset}>Reset</button>
     </header>
     <fieldset class="border py-2 px-3">
