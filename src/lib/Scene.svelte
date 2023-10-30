@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { scale, mn, mx, cx, cy, exp } from "$lib/stores";
+  import { scale, mn, mx, cx, cy, exp, isTweenEnabled } from "$lib/stores";
   import { norm, getViewValue } from "$lib/util";
   import vertexShader from "$lib/shaders/vertex.glsl?raw";
   import fragmentShader from "$lib/shaders/fragment.glsl?raw";
@@ -78,9 +78,9 @@
     ymax = normedCenterY + height / 2;
 
     // update uniforms and scale
-    mn.set([xmin, ymin]);
-    mx.set([xmax, ymax]);
-    scale.set($scale + 1);
+    mn.set([xmin, ymin], { duration: $isTweenEnabled ? 400 : 0 });
+    mx.set([xmax, ymax], { duration: $isTweenEnabled ? 400 : 0 });
+    scale.set($scale + 1, { duration: $isTweenEnabled ? 400 : 0 });
   };
 </script>
 

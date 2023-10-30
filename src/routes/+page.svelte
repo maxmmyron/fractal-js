@@ -58,7 +58,7 @@
     </header>
     <fieldset class="border py-2 px-3">
       <legend><h3 class="text-xl font-semibold">Coloring Options</h3></legend>
-      <Input bind:value={$scale} min={0} max={100} step={0.01}>prec,</Input>
+      <Input store={scale} min={0} max={100} step={0.01}>prec,</Input>
     </fieldset>
     <fieldset class="border py-2 px-3 space-y-3">
       <legend><h3 class="text-xl font-semibold">Render Options</h3></legend>
@@ -68,13 +68,13 @@
         <option value="burningship">Burning Ship</option>
       </select>
       {#if viewType === "mandelbrot"}
-        <Input bind:value={$exp} min={2} max={10} step={1}>exp.</Input>
+        <Input store={exp} min={2} max={10} step={1}>exp.</Input>
       {/if}
       {#if viewType === "julia"}
-        <Input bind:value={$cx} min={-2} max={2} step={0.01}>
+        <Input store={cx} min={-2} max={2} step={0.01}>
           C<sub>x</sub>
         </Input>
-        <Input bind:value={$cy} min={-2} max={2} step={0.01}>
+        <Input store={cy} min={-2} max={2} step={0.01}>
           C<sub>y</sub>
         </Input>
       {/if}
@@ -88,7 +88,6 @@
           id="tween-transform"
           class="w-4"
           type="checkbox"
-          disabled
           bind:checked={$isTweenEnabled}
         />
       </div>
