@@ -48,51 +48,70 @@
 </script>
 
 <main class="flex h-screen">
-  <section class="w-[480px] flex flex-col gap-8 p-4 pr-2 h-full">
-    <header class="flex items-center justify-between gap-4">
-      <h2 class="text-3xl font-bold">Fractal City-ville</h2>
-      <button
-        class="px-3 py-1 border rounded-md shadow bg-slate-950 text-white"
-        on:click={reset}>Reset</button
-      >
-    </header>
-    <fieldset class="border py-2 px-3">
-      <legend><h3 class="text-xl font-semibold">Coloring Options</h3></legend>
-      <Input store={scale} min={0} max={100} step={0.01}>prec,</Input>
-    </fieldset>
-    <fieldset class="border py-2 px-3 space-y-3">
-      <legend><h3 class="text-xl font-semibold">Render Options</h3></legend>
-      <select bind:value={viewType} class="py-1 px-2" on:change={reset}>
-        <option value="mandelbrot" selected>Mandelbrot Set</option>
-        <option value="julia">Julia Set</option>
-        <option value="burningship">Burning Ship</option>
-      </select>
-      {#if viewType === "mandelbrot"}
-        <Input store={exp} min={2} max={10} step={1}>exp.</Input>
-      {/if}
-      {#if viewType === "julia"}
-        <Input store={cx} min={-2} max={2} step={0.01}>
-          C<sub>x</sub>
-        </Input>
-        <Input store={cy} min={-2} max={2} step={0.01}>
-          C<sub>y</sub>
-        </Input>
-      {/if}
-      <br />
-    </fieldset>
-    <fieldset class="border py-2 px-3 space-y-3">
-      <legend><h3 class="text-xl font-semibold">Settings</h3></legend>
-      <div class="grid grid-cols-[2fr,4fr] gap-y-3">
-        <label for="tween-transform">Tween</label>
-        <input
-          id="tween-transform"
-          class="w-4"
-          type="checkbox"
-          bind:checked={$isTweenEnabled}
-        />
-      </div>
-    </fieldset>
-  </section>
+  <div class="w-[480px] flex flex-col gap-10 p-4 pr-2 h-full">
+    <section class="flex-1 space-y-5">
+      <header class="flex items-center justify-between gap-4">
+        <h2 class="text-3xl font-bold">Settings</h2>
+        <button
+          class="px-3 py-1 border rounded-md shadow bg-slate-950 text-white"
+          on:click={reset}>Reset</button
+        >
+      </header>
+      <fieldset class="border p-3 space-y-3">
+        <legend><h3 class="text-xl font-semibold">General</h3></legend>
+        <div class="grid grid-cols-[2fr,4fr] gap-y-3">
+          <label for="tween-transform">Tween</label>
+          <input
+            id="tween-transform"
+            class="w-4"
+            type="checkbox"
+            bind:checked={$isTweenEnabled}
+          />
+        </div>
+      </fieldset>
+      <fieldset class="border p-3 space-y-3">
+        <legend><h3 class="text-xl font-semibold">Render</h3></legend>
+        <Input store={scale} min={0} max={100} step={0.01}>prec.</Input>
+        <hr />
+        <label class="w-full grid grid-cols-6">
+          <span class="font-bold col-start-1">func.</span>
+          <select
+            bind:value={viewType}
+            class="py-1 px-2 col-start-2 col-span-4"
+            on:change={reset}
+          >
+            <option value="mandelbrot" selected>Mandelbrot Set</option>
+            <option value="julia">Julia Set</option>
+            <option value="burningship">Burning Ship</option>
+          </select>
+        </label>
+        {#if viewType === "mandelbrot"}
+          <Input store={exp} min={2} max={10} step={1}>exp.</Input>
+        {/if}
+        {#if viewType === "julia"}
+          <Input store={cx} min={-2} max={2} step={0.01}>
+            C<sub>x</sub>
+          </Input>
+          <Input store={cy} min={-2} max={2} step={0.01}>
+            C<sub>y</sub>
+          </Input>
+        {/if}
+      </fieldset>
+    </section>
+    <section class="space-y-5">
+      <h2 class="text-3xl font-bold">Credits</h2>
+
+      <p class="mt-auto">
+        made by
+        <a
+          class="text-neutral-500 underline font-semibold"
+          href="https://mmyron.com"
+        >
+          max myron
+        </a>
+      </p>
+    </section>
+  </div>
   <section
     class="flex-1 m-2 rounded-lg overflow-clip shadow-md"
     bind:this={container}
