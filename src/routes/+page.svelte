@@ -48,7 +48,7 @@
 </script>
 
 <main class="flex h-screen">
-  <section class="w-[480px] flex flex-col gap-8 p-4 border-r h-full">
+  <section class="w-[480px] flex flex-col gap-8 p-4 pr-2 h-full">
     <header class="flex items-center justify-between gap-4">
       <h2 class="text-3xl font-bold">Fractal City-ville</h2>
       <button
@@ -94,7 +94,10 @@
       </div>
     </fieldset>
   </section>
-  <section class="flex-1" bind:this={container}>
+  <section
+    class="flex-1 m-2 rounded-lg overflow-clip shadow-md"
+    bind:this={container}
+  >
     <Canvas>
       <Scene {resolution} {viewType} bind:reset={resetScene} />
     </Canvas>
