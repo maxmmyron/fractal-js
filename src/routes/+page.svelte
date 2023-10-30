@@ -51,8 +51,8 @@
       <Input store={cy} min={-2} max={2} step={0.01}>C<sub>y</sub></Input>
       <br />
       <select bind:value={viewType} class="py-1 px-2" on:change={reset}>
-        <option value="mandelbrot" selected>Mandelbrot</option>
-        <option value="julia">Julia Shit</option>
+        <option value="mandelbrot" selected>Mandelbrot Set</option>
+        <option value="julia">Julia Set</option>
       </select>
     </fieldset>
   </section>
