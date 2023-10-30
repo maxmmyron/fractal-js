@@ -18,10 +18,10 @@
     scale.set(0, { duration: 0 });
     switch (viewType) {
       case "mandelbrot":
-        mn.set([-2, (-3 * (resolution[1] / resolution[0])) / 2], {
+        mn.set([-2, (-4 * (resolution[1] / resolution[0])) / 2], {
           duration: 0,
         });
-        mx.set([1, (3 * (resolution[1] / resolution[0])) / 2], { duration: 0 });
+        mx.set([2, (4 * (resolution[1] / resolution[0])) / 2], { duration: 0 });
         resetScene(viewType);
         break;
       case "julia":

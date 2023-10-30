@@ -13,8 +13,8 @@
   export const reset = (type: App.Locals["View"]) => {
     switch (type) {
       case "mandelbrot":
-        (xmin = -2), (ymin = (-3 * (resolution[1] / resolution[0])) / 2);
-        (xmax = 1), (ymax = (3 * (resolution[1] / resolution[0])) / 2);
+        (xmin = -2), (ymin = (-4 * (resolution[1] / resolution[0])) / 2);
+        (xmax = 2), (ymax = (4 * (resolution[1] / resolution[0])) / 2);
         break;
       case "julia":
         (xmin = -2), (ymin = (-4 * (resolution[1] / resolution[0])) / 2);
@@ -39,7 +39,7 @@
 
   // initial plotting values
   let xmin = -2;
-  let xmax = 1;
+  let xmax = 2;
 
   let ymin = (-(xmax - xmin) * (planeH / planeW)) / 2;
   let ymax = ((xmax - xmin) * (planeH / planeW)) / 2;
@@ -94,17 +94,17 @@
     uniforms={{
       resolution: { value: resolution },
       scale: { value: 0.0 },
-      mn: { value: [-2, (-3 * (resolution[1] / resolution[0])) / 2] },
-      mx: { value: [1, (3 * (resolution[1] / resolution[0])) / 2] },
+      mn: { value: [-2, (-4 * (resolution[1] / resolution[0])) / 2] },
+      mx: { value: [2, (4 * (resolution[1] / resolution[0])) / 2] },
       juliaC: { value: [0.0, 0.0] },
       view: { value: 0 },
-      exp: { value: 2 },
+      mexp: { value: 2 },
     }}
     uniforms.scale.value={$scale}
     uniforms.mn.value={$mn}
     uniforms.mx.value={$mx}
     uniforms.juliaC.value={[$cx, $cy]}
     uniforms.view.value={getViewValue(viewType)}
-    uniforms.exp.value={$exp}
+    uniforms.mexp.value={$exp}
   />
 </T.Mesh>
