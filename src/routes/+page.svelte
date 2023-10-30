@@ -15,7 +15,7 @@
   onMount(() => (resolution = [container.clientWidth, container.clientHeight]));
 
   const reset = () => {
-    scale.set(0);
+    scale.set(0, { duration: 0 });
     switch (viewType) {
       case "mandelbrot":
         mn.set([-2, (-3 * (resolution[1] / resolution[0])) / 2]);
@@ -25,8 +25,8 @@
       case "julia":
         mn.set([-2, (-4 * (resolution[1] / resolution[0])) / 2]);
         mx.set([2, (4 * (resolution[1] / resolution[0])) / 2]);
-        cx.set(0.285);
-        cy.set(0.01);
+        cx.set(0.285, { duration: 0 });
+        cy.set(0.01, { duration: 0 });
         resetScene(viewType);
         break;
       default:
