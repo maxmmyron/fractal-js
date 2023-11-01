@@ -25,6 +25,7 @@
 	"dependencies": {
 		"@threlte/core": "^6.1.0",
 		"@threlte/extras": "^7.5.0",
+		"@vercel/analytics": "^1.1.1",
 		"three": "^0.158.0"
 	}
 }
